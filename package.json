@@ -20,9 +20,9 @@
   "homepage": "https://github.com/Nithinfgs/freshclone#readme",
   "bugs": { "url": "https://github.com/Nithinfgs/freshclone/issues" },
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
-    "@types/node": "^22.0.0",
-    "eslint": "^9.0.0",
-    "typescript": "^5.6.0"
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.3",
+    "eslint": "^10.11.0",
+    "typescript": "^7.0.2"
   }
 }
