@@ -1,0 +1,27 @@
+name: freshclone
+description: Run your README's shell blocks from a fresh copy of the repo and fail the job if the quickstart is broken.
+author: Nithinfgs
+branding:
+  icon: check-circle
+  color: green
+inputs:
+  file:
+    description: Markdown file to check
+    default: README.md
+  args:
+    description: Extra freshclone arguments (for example "--continue --timeout 300")
+    default: ''
+runs:
+  using: composite
+  steps:
+    - name: Run freshclone
+      shell: bash
+      env:
+        FC_FILE: ${{ inputs.file }}
+        FC_ARGS: ${{ inputs.args }}
+      run: |
+        # shellcheck disable=SC2086
+        node "$GITHUB_ACTION_PATH/bin/freshclone.js" "$FC_FILE" --yes --markdown "$RUNNER_TEMP/freshclone.md" $FC_ARGS \
+          && status=0 || status=$?
+        cat "$RUNNER_TEMP/freshclone.md" >> "$GITHUB_STEP_SUMMARY" 2>/dev/null || true
+        exit $status
