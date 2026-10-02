@@ -1,0 +1,25 @@
+name: Bug report
+description: freshclone crashed, ran the wrong thing, or gave a wrong verdict
+labels: [bug]
+body:
+  - type: input
+    id: version
+    attributes: { label: freshclone version, description: Output of `freshclone --version` }
+    validations: { required: true }
+  - type: input
+    id: env
+    attributes: { label: OS and Node version, placeholder: macOS 15 / Node 22.11 }
+    validations: { required: true }
+  - type: textarea
+    id: readme
+    attributes:
+      label: The Markdown that triggers it
+      description: The smallest README snippet that reproduces the problem.
+      render: markdown
+    validations: { required: true }
+  - type: textarea
+    id: output
+    attributes:
+      label: What happened, and what you expected
+      description: Paste the terminal output (`--verbose` helps).
+    validations: { required: true }

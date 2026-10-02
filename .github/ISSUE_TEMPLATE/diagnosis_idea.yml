@@ -1,0 +1,20 @@
+name: Diagnosis idea
+description: A "works on my machine" cause that freshclone could recognise and explain
+labels: [diagnosis]
+body:
+  - type: textarea
+    id: failure
+    attributes:
+      label: The error message
+      description: What does the failing command print?
+      render: text
+    validations: { required: true }
+  - type: textarea
+    id: cause
+    attributes:
+      label: What was actually different on your machine?
+      description: For example a gitignored file, a global tool, an env var, a ~/.config entry.
+    validations: { required: true }
+  - type: textarea
+    id: fix
+    attributes: { label: What should the fix suggestion say? }
