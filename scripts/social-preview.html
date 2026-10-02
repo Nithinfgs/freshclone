@@ -1,0 +1,11 @@
+<!doctype html><meta charset="utf-8"><style>
+body{margin:0;width:1280px;height:640px;background:#0d1117;color:#e6edf3;font:32px/1.35 -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;display:flex;flex-direction:column;justify-content:center;padding:0 80px;box-sizing:border-box}
+h1{font:700 96px ui-monospace,Menlo,monospace;margin:0 0 24px;letter-spacing:-2px}
+p{margin:0 0 36px;color:#c9d1d9;max-width:1000px}
+pre{background:#161b22;border:1px solid #30363d;border-radius:12px;padding:22px 28px;margin:0;font:26px/1.5 ui-monospace,Menlo,monospace;width:max-content}
+.r{color:#f85149}.c{color:#58a6ff}.d{color:#8b949e}
+</style><h1>freshclone</h1>
+<p>Run your README like a new contributor would, and find out which hidden assumption broke.</p>
+<pre><span class="r">✗</span> cp .env.example .env
+<span class="c">→</span> <span class="d">`.env.example` is gitignored (rule: .env*),</span>
+<span class="d">  so a fresh clone does not have it.</span></pre>

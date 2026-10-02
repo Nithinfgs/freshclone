@@ -72,7 +72,11 @@ export function formatEntry(entry, o) {
   if (result.status === 'skip') {
     lines.push(`${pad}${c.dim(result.failures[0] ?? 'skipped')}`);
   } else if (result.status !== 'pass') {
-    for (const f of result.failures) lines.push(`${pad}${c.red(f)}`);
+    // the default "exit code N, expected 0" is noise when the output already explains the failure
+    const quiet = result.output.trim() !== '' && step.directives.exit === 0;
+    for (const f of result.failures) {
+      if (!(quiet && /^exit code \d+, expected 0$/.test(f))) lines.push(`${pad}${c.red(f)}`);
+    }
     for (const l of tail(result.output, 6)) lines.push(`${pad}${c.dim('│')} ${l}`);
     for (const d of diagnoses) {
       wrap(d.message, WIDTH).forEach((l, i) => lines.push(`${pad}${i === 0 ? c.cyan('→') : ' '} ${l}`));
