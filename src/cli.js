@@ -91,7 +91,7 @@ export async function main(argv, io) {
   if (values.version) return io.stdout.write(`${VERSION}\n`), 0;
 
   if (values.demo) {
-    const ok = await runDemo({ write: (s) => io.stdout.write(s), color });
+    const ok = await runDemo({ write: (s) => io.stdout.write(s), color, htmlPath: /** @type {string | undefined} */ (values.html) });
     return ok ? 0 : 1;
   }
 

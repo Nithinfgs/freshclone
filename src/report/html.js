@@ -4,6 +4,8 @@ import path from 'node:path';
 /** @param {string} s */
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+const rich = (/** @type {string} */ s) => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
+
 const ICON = { pass: '✓', fail: '✗', timeout: '✗', skip: '–' };
 
 /**
@@ -18,7 +20,7 @@ export function toHTML(report, relFile) {
     .map(({ step, result, diagnoses }) => {
       const status = result.status === 'timeout' ? 'fail' : result.status;
       const diag = diagnoses
-        .map((d) => `<li><strong>${esc(d.message)}</strong>${d.fix ? `<div class="fix">Fix: ${esc(d.fix)}</div>` : ''}</li>`)
+        .map((d) => `<li><strong>${rich(d.message)}</strong>${d.fix ? `<div class="fix">Fix: ${rich(d.fix)}</div>` : ''}</li>`)
         .join('');
       const reasons = result.failures.map((f) => `<div class="reason">${esc(f)}</div>`).join('');
       const output = result.status === 'pass' || result.status === 'skip' ? '' : `<pre>${esc(result.output.trimEnd().split('\n').slice(-40).join('\n'))}</pre>`;

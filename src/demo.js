@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { check } from './check.js';
+import { toHTML } from './report/html.js';
 import { formatEntry, formatHeader, formatSummary, painter } from './report/terminal.js';
 
 const README_BEFORE = `# tinyserver
@@ -60,7 +61,7 @@ function git(args, cwd) {
 
 /**
  * Build a small repo that "works on my machine", check it, fix it, check again.
- * @param {{ write: (s: string) => void, color: boolean }} io
+ * @param {{ write: (s: string) => void, color: boolean, htmlPath?: string }} io
  * @returns {Promise<boolean>} true if the demo behaved as designed
  */
 export async function runDemo(io) {
@@ -93,6 +94,7 @@ export async function runDemo(io) {
     };
 
     const before = await run('1. The README as the author wrote it');
+    if (io.htmlPath) fs.writeFileSync(io.htmlPath, toHTML(before, 'README.md'));
 
     fs.writeFileSync(path.join(dir, '.gitignore'), '.env*\n!.env.example\nnode_modules\n');
     fs.writeFileSync(path.join(dir, 'README.md'), README_AFTER);

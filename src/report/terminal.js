@@ -2,6 +2,8 @@
 /** @typedef {import('../check.js').Entry} Entry */
 /** @typedef {import('../check.js').Report} Report */
 
+const WIDTH = 84;
+
 /** @param {boolean} enabled */
 export function painter(enabled) {
   const wrap = (/** @type {number} */ open, /** @type {number} */ close) => (/** @type {string} */ s) => (enabled ? `\u001b[${open}m${s}\u001b[${close}m` : s);
@@ -11,6 +13,25 @@ export function painter(enabled) {
 /** @param {number} ms */
 export function formatDuration(ms) {
   return ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed(1)}s`;
+}
+
+/**
+ * Greedy word wrap.
+ * @param {string} text
+ * @param {number} width
+ */
+export function wrap(text, width) {
+  /** @type {string[]} */
+  const lines = [];
+  let line = '';
+  for (const word of text.split(/\s+/)) {
+    if (line && line.length + 1 + word.length > width) {
+      lines.push(line);
+      line = word;
+    } else line = line ? `${line} ${word}` : word;
+  }
+  if (line) lines.push(line);
+  return lines;
 }
 
 /**
@@ -54,8 +75,8 @@ export function formatEntry(entry, o) {
     for (const f of result.failures) lines.push(`${pad}${c.red(f)}`);
     for (const l of tail(result.output, 6)) lines.push(`${pad}${c.dim('│')} ${l}`);
     for (const d of diagnoses) {
-      lines.push(`${pad}${c.cyan('→')} ${d.message}`);
-      if (d.fix) lines.push(`${pad}  ${c.dim('fix:')} ${d.fix}`);
+      wrap(d.message, WIDTH).forEach((l, i) => lines.push(`${pad}${i === 0 ? c.cyan('→') : ' '} ${l}`));
+      if (d.fix) wrap(`fix: ${d.fix}`, WIDTH).forEach((l, i) => lines.push(`${pad}  ${i === 0 ? `${c.dim('fix:')}${l.slice(4)}` : `     ${l}`}`));
     }
   } else if (o.verbose) {
     for (const l of tail(result.output, 12)) lines.push(`${pad}${c.dim('│')} ${l}`);
